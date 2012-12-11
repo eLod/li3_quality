@@ -52,7 +52,12 @@ class Unit extends \lithium\test\Unit  {
 	 * @return object
 	 */
 	protected function _mockRuleSuccess($rule, $options = array()) {
-		$rule = $this->_rule($rule);
+		if (!is_array($options)) {
+			$options = array(
+				'source' => $options,
+			);
+		}
+		$rule = $this->_rule($rule, $options);
 		$testable = $this->_testable($options);
 		$rule->apply($testable);
 		return $rule->success();
@@ -65,8 +70,13 @@ class Unit extends \lithium\test\Unit  {
 	 * @param  string|array $options Source code, or arary of config options
 	 * @return object
 	 */
-	protected function _rule($rule) {
-		$this->rule = new $rule();
+	protected function _rule($rule, $options = array()) {
+		if (!is_array($options)) {
+			$options = array(
+				'source' => $options,
+			);
+		}
+		$this->rule = new $rule($options);
 		return $this->rule;
 	}
 
@@ -76,8 +86,8 @@ class Unit extends \lithium\test\Unit  {
 	 * @param  string|array $options Source code, or arary of config options
 	 * @return li3_quality\tests\mocks\test\Testable
 	 */
-	protected function _testable($options) {
-		if (is_string($options)) {
+	protected function _testable($options = array()) {
+		if (!is_array($options)) {
 			$options = array(
 				'source' => $options,
 			);

@@ -7,6 +7,8 @@
  */
 namespace li3_quality\test;
 
+use SplFileInfo;
+
 abstract class Rule extends \lithium\core\Object {
 
 	/**
@@ -139,6 +141,16 @@ abstract class Rule extends \lithium\core\Object {
 			}
 		}
 		return $openBrackets >= 1;
+	}
+
+	/**
+	 * Will return a new SplFileInfo Object to play with
+	 *
+	 * @param  string $path The path to the file
+	 * @return object
+	 */
+	public function fileInfo($path) {
+		return new SplFileInfo($path);
 	}
 
 }
