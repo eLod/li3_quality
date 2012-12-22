@@ -469,7 +469,7 @@ EOD;
 	}
 
 	public function testIncompleteArrayException() {
-		$this->assertException('LogicException', function() {
+		$this->assertException('li3_quality\analysis\ParserException', function() {
 			$code = <<<EOD
 class Foobar {
 	\$foo = array(
@@ -481,7 +481,7 @@ EOD;
 	}
 
 	public function testIncompleteDoWhile() {
-		$this->assertException('LogicException', function() {
+		$this->assertException('li3_quality\analysis\ParserException', function() {
 			$code = <<<EOD
 do {
 
