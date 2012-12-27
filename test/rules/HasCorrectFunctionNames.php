@@ -28,6 +28,13 @@ class HasCorrectFunctionNames extends \li3_quality\test\Rule {
 	);
 
 	/**
+	 * Cache for internal functions, see `_internal()` and `apply()`.
+	 *
+	 * @var array
+	 */
+	protected $_internals = array();
+
+	/**
 	 * Will iterate the tokens looking for functions validating they have the
 	 * correct camelBack naming style.
 	 *
@@ -44,6 +51,9 @@ class HasCorrectFunctionNames extends \li3_quality\test\Rule {
 				if (in_array($label, $this->_magicMethods)) {
 					continue;
 				}
+				if ($token['parent'] === -1 && $this->_internal($label)) {
+					continue;
+				}
 				if ($testable->findNext(array(T_PROTECTED), $modifiers) !== false) {
 					$label = preg_replace('/^_/', '', $label);
 				}
@@ -57,6 +67,19 @@ class HasCorrectFunctionNames extends \li3_quality\test\Rule {
 		}
 	}
 
+	/**
+	 * Check if a function is internal.
+	 *
+	 * @param string $function Function name
+	 * @return boolean True if function is internal
+	 */
+	protected function _internal($function) {
+		if (!$this->_internals) {
+			$functions = get_defined_functions();
+			$this->_internals = $functions['internal'];
+		}
+		return in_array($function, $this->_internals);
+	}
 }
 
 ?>
